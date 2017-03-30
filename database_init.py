@@ -28,12 +28,34 @@ class AdsParse(object):
                     self.data_str = []
 
 
-def databaseinit(tablename, data):
-    print(tablename)
-    #print(data)
+def databaseinit():
+    """
+    Function for init data base and tables if it does not exist.
+    :return: True if database is created
+    """
+    con = lite.connect('test.db')
+    cur = con.cursor()
+    cur.execute("DROP TABLE IF EXISTS Hierarchies")
+    cur.execute('''CREATE TABLE "Hierarchies" ("id" INTEGER PRIMARY KEY,
+                  "Name" TEXT NOT NULL);''')
+    con.commit()
+
+
+def insertvalues (tablename, values):
+    con = lite.connect('test.db')
+    cur = con.cursor()
+    cur.executemany("INSERT INTO %s VALUES (?,?);" % tablename, values)
+    con.commit()
+
+
+
 
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
     test.parse()
-    for keys in test.data.keys():
-        databaseinit(keys, test.data[keys])
+    name = enumerate(test.data.keys(), start=1)
+    list_data = tuple(test.data.keys())
+    print(list_data)
+    #print(test.data["Entity"][0])
+    databaseinit()
+    insertvalues("Hierarchies", name)
