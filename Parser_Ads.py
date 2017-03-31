@@ -28,15 +28,19 @@ class AdsParse(object):
                     self.data_str = []
 
 
-def insertvalues (values):
+def insertvalues (tablename, values):
     con = lite.connect('test.db')
     cur = con.cursor()
-    for i in range(0, len(values)):
-        data = [values[i][0]]
-        for x in values[i][1]:
-            data.append(x)
-        cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
-    con.commit()
+    if tablename == 'Entity':
+        for i in range(0, len(values)):
+            data = [values[i][0]]
+            for x in values[i][1]:
+                data.append(x)
+            cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
+        con.commit()
+    elif tablename == 'Hierarchies':
+        cur.executemany("INSERT INTO Hierarchies VALUES (?,?);", values)
+        con.commit()
 
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
@@ -47,4 +51,4 @@ if __name__ == '__main__':
     #list_data = tuple(test.data.keys())
     #print(list_data)
     #print(test.data["Entity"][0])
-    insertvalues(data_entity)
+    insertvalues("Hierarchies", name)
