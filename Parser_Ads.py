@@ -31,24 +31,35 @@ class AdsParse(object):
 def insertvalues (tablename, values):
     con = lite.connect('test.db')
     cur = con.cursor()
-    if tablename == 'Entity':
-        for i in range(0, len(values)):
-            data = [values[i][0]]
-            for x in values[i][1]:
-                data.append(x)
-            cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
-        con.commit()
-    elif tablename == 'Hierarchies':
+    if tablename == 'Hierarchies':
         cur.executemany("INSERT INTO Hierarchies VALUES (?,?);", values)
         con.commit()
+    else:
+        if tablename == 'Entity':
+            for i in range(0, len(values)):
+                data = [values[i][0]]
+                for x in values[i][1]:
+                    data.append(x)
+                cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
+            con.commit()
+        elif tablename == 'MovProd':
+            for i in range(0, len(values)):
+                data = [values[i][0]]
+                for x in values[i][1]:
+                    data.append(x)
+                cur.executemany("INSERT INTO MovProd VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
+            con.commit()
+
 
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
     test.parse()
     name = enumerate(test.data.keys(), start=1)
-    #print(list(name))
     data_entity = list(enumerate(test.data['Entity'], start=0))
-    #list_data = tuple(test.data.keys())
-    #print(list_data)
-    #print(test.data["Entity"][0])
-    insertvalues("Entity", data_entity)
+    data_movprod = list(enumerate(test.data['MovProd'], start=0))
+    data_account = list(enumerate(test.data['Account'], start=0))
+
+    print(test.data["Account"][0])
+
+    #insertvalues("Entity", data_entity)
+    #insertvalues("MovProd", data_movprod)
