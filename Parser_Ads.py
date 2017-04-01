@@ -36,18 +36,25 @@ def insertvalues (tablename, values):
         con.commit()
     else:
         if tablename == 'Entity':
-            for i in range(0, len(values)):
+            for i in range(1, len(values)):
                 data = [values[i][0]]
                 for x in values[i][1]:
                     data.append(x)
                 cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
             con.commit()
         elif tablename == 'MovProd':
-            for i in range(0, len(values)):
+            for i in range(1, len(values)):
                 data = [values[i][0]]
                 for x in values[i][1]:
                     data.append(x)
                 cur.executemany("INSERT INTO MovProd VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
+        elif tablename == 'Account':
+            for i in range(1, len(values)):
+                data = [values[i][0]]
+                for x in values[i][1]:
+                    data.append(x)
+                cur.executemany('''INSERT INTO Accounts VALUES
+                               (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''', (data,))
             con.commit()
 
 
@@ -56,10 +63,10 @@ if __name__ == '__main__':
     test.parse()
     name = enumerate(test.data.keys(), start=1)
     data_entity = list(enumerate(test.data['Entity'], start=0))
-    data_movprod = list(enumerate(test.data['MovProd'], start=0))
     data_account = list(enumerate(test.data['Account'], start=0))
+    data_movprod = list(enumerate(test.data['MovProd'], start=0))
 
     print(test.data["Account"][0])
-
     #insertvalues("Entity", data_entity)
     #insertvalues("MovProd", data_movprod)
+    insertvalues("Account", data_account)
