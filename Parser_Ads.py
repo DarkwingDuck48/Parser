@@ -8,6 +8,7 @@ class AdsParse(object):
         self.columns = None
         self.data = {}          # Store all data from ads, key - table name, value - data
         self.data_str = []
+        self.customtop = ['MovProd', 'VarLob', 'MktOvr', 'AuditDim', 'RelPartDisc1', 'CostCenterDisc2', 'CustType']
 
     def parse(self):
         with open(self.ads_file, 'r', encoding='utf-8') as meta:
@@ -42,12 +43,6 @@ def insertvalues (tablename, values):
                     data.append(x)
                 cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
             con.commit()
-        elif tablename == 'MovProd':
-            for i in range(1, len(values)):
-                data = [values[i][0]]
-                for x in values[i][1]:
-                    data.append(x)
-                cur.executemany("INSERT INTO MovProd VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
         elif tablename == 'Account':
             for i in range(1, len(values)):
                 data = [values[i][0]]
@@ -56,7 +51,13 @@ def insertvalues (tablename, values):
                 cur.executemany('''INSERT INTO Accounts VALUES
                                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''', (data,))
             con.commit()
-
+        elif tablename in ['MovProd', 'VarLob', 'MktOvr', 'AuditDim', 'RelPartDisc1', 'CostCenterDisc2', 'CustType']:
+            for i in range(1, len(values)):
+                data = [values[i][0]]
+                for x in values[i][1]:
+                    data.append(x)
+                cur.executemany("INSERT INTO %s VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);" % tablename, (data,))
+            con.commit()
 
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
@@ -65,8 +66,14 @@ if __name__ == '__main__':
     data_entity = list(enumerate(test.data['Entity'], start=0))
     data_account = list(enumerate(test.data['Account'], start=0))
     data_movprod = list(enumerate(test.data['MovProd'], start=0))
-
-    print(test.data["Account"][0])
+    data_varlob = list(enumerate(test.data['VarLob'], start=0))
+    data_mktovr = list(enumerate(test.data['MktOvr'], start=0))
+    for key in test.data.keys():
+        if key in test.customtop:
+            print ("Check it - ",key)
+    #print(test.data["MktOvr"][0])
     #insertvalues("Entity", data_entity)
     #insertvalues("MovProd", data_movprod)
-    insertvalues("Account", data_account)
+    #insertvalues("Account", data_account)
+    #insertvalues("VarLob", data_varlob)
+    #insertvalues("MktOvr", data_mktovr)

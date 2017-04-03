@@ -57,11 +57,23 @@ cur.execute(
 "UserDefined2" TEXT,
 "UserDefined3" TEXT, 
 "Alias" TEXT);''')
+
 # MovProd
 cur.execute(
     '''CREATE TABLE IF NOT EXISTS "MovProd" ("id" INTEGER PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT, 
                         "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
                         "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
                         "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
-
+# VarLob
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "VarLob" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
+# MktOvr
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "MktOvr" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
 con.commit()
