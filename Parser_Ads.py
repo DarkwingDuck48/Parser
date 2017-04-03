@@ -71,6 +71,8 @@ if __name__ == '__main__':
     for key in test.data.keys():
         if key in test.customtop:
             print ("Check it - ",key)
+
+
     #print(test.data["MktOvr"][0])
     #insertvalues("Entity", data_entity)
     #insertvalues("MovProd", data_movprod)
