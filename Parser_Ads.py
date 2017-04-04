@@ -62,16 +62,16 @@ def insertvalues (tablename, values):
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
     test.parse()
-    name = enumerate(test.data.keys(), start=1)
-    data_entity = list(enumerate(test.data['Entity'], start=0))
-    data_account = list(enumerate(test.data['Account'], start=0))
-    data_movprod = list(enumerate(test.data['MovProd'], start=0))
-    data_varlob = list(enumerate(test.data['VarLob'], start=0))
-    data_mktovr = list(enumerate(test.data['MktOvr'], start=0))
+    #name = enumerate(test.data.keys(), start=1)
+    #data_entity = list(enumerate(test.data['Entity'], start=0))
+    #data_account = list(enumerate(test.data['Account'], start=0))
+    #data_movprod = list(enumerate(test.data['MovProd'], start=0))
+    #data_varlob = list(enumerate(test.data['VarLob'], start=0))
+    #data_mktovr = list(enumerate(test.data['MktOvr'], start=0))
     for key in test.data.keys():
-        if key in test.customtop:
-            print ("Check it - ",key)
-
+        data = list(enumerate(test.data[key], start=0))
+        insertvalues(key, data)
+    print("Tables is filled")
 
     #print(test.data["MktOvr"][0])
     #insertvalues("Entity", data_entity)

@@ -76,4 +76,29 @@ cur.execute(
                         "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
                         "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
                         "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
+# AuditDim
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "AuditDim" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
+# RelPartDisc1
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "RelPartDisc1" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
+# CostCenterDisc2
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "CostCenterDisc2" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
+
+# CustType
+cur.execute(
+    ''' CREATE TABLE IF NOT EXISTS "CustType" ("id" PRIMARY KEY, "Parent" TEXT, "Child" TEXT, "IsPrimary" TEXT,
+                        "AggregationWeight" TEXT, "SwitchSignForFlow" TEXT, "SwitchTypeForFlow" TEXT, 
+                        "SecurityClass" TEXT, "IsCalculated" TEXT, "SubmissionGroup" TEXT, "UserDefined1" TEXT,
+                        "UserDefined2" TEXT, "UserDefined3" TEXT, "Alias" TEXT);''')
 con.commit()
