@@ -12,8 +12,8 @@ import os.path
 
 con = lite.connect('test.db')
 cur = con.cursor()
-# Hierarchies
-cur.execute('''CREATE TABLE IF NOT EXISTS "Hierarchies"  ("id" INTEGER PRIMARY KEY,"Name" TEXT NOT NULL);''')
+# Hierarchies - do not think that this table is needed for work.
+# cur.execute('''CREATE TABLE IF NOT EXISTS "Hierarchies"  ("id" INTEGER PRIMARY KEY,"Name" TEXT NOT NULL);''')
 # Entity
 cur.execute('''CREATE TABLE IF NOT EXISTS "Entity"("id" INTEGER PRIMARY KEY, "Parent" TEXT, "Child" TEXT, 
             "IsPrimary" TEXT, "Currency" TEXT, "AllowAdjs" TEXT, "AllowAdjFromChildren" TEXT, "HoldingCompany" TEXT,
@@ -30,13 +30,13 @@ cur.execute(
 "IsCalculated" TEXT, 
 "IsConsolidated" TEXT, 
 "PlugAccount" TEXT, 
-"CustomTopMemberAuditDim" TEXT DEFAULT "[None]", 
-"CustomTopMemberCostCenterDisc2" TEXT DEFAULT "[None]", 
-"CustomTopMemberMktOvr" TEXT DEFAULT "[None]",
-"CustomTopMemberMovProd" TEXT DEFAULT "[None]", 
-"CustomTopMemberRelPartDisc1" TEXT DEFAULT "[None]", 
-"CustomTopMemberVarLob" TEXT DEFAULT "[None]", 
-"CustomTopMemberCustType" TEXT DEFAULT "[None]", 
+"CustomTopMemberAuditDim" TEXT DEFAULT '[None]', 
+"CustomTopMemberCostCenterDisc2" TEXT DEFAULT '[None]', 
+"CustomTopMemberMktOvr" TEXT DEFAULT '[None]',
+"CustomTopMemberMovProd" TEXT DEFAULT '[None]', 
+"CustomTopMemberRelPartDisc1" TEXT DEFAULT '[None]', 
+"CustomTopMemberVarLob" TEXT DEFAULT '[None]', 
+"CustomTopMemberCustType" TEXT DEFAULT '[None]', 
 "NumDecimalPlaces" INTEGER, 
 "EnableCustomAggrAuditDim" TEXT, 
 "EnableCustomAggrCostCenterDisc2" TEXT, 
