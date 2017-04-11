@@ -77,7 +77,8 @@ def base(tablename, parentname):
     for item in base_list:
         if (item, ) in selectedvalue:
             selectedvalue.remove((item, ))
-    print (selectedvalue)
+    print(selectedvalue)
+    
     return base_list
 
 if __name__ == '__main__':
