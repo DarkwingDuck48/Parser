@@ -66,8 +66,19 @@ def insertvalues (tablename, values):
 def base(tablename, parentname):
     con = lite.connect('test.db')
     cur = con.cursor()
+    base_list = []
+    # Select child items to parent
     selectedvalue = list(cur.execute("SELECT Child from %s WHERE Parent = (?)" % tablename, (parentname,)))
-    return selectedvalue
+    # create list for base check
+    for item in selectedvalue:
+        if not list(cur.execute("SELECT Child FROM %s WHERE Parent = (?)" % tablename, item)):
+            base_list.append(item[0])
+    # clear selectedvalue list from not base elements
+    for item in base_list:
+        if (item, ) in selectedvalue:
+            selectedvalue.remove((item, ))
+    print (selectedvalue)
+    return base_list
 
 if __name__ == '__main__':
     test = AdsParse('GRSHFM_Metadata_17030102.ads')
