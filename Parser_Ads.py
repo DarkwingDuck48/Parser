@@ -32,8 +32,8 @@ class AdsParse(object):
         return data
 
 
-def insertvalues (tablename, values):
-    con = lite.connect('test.db')
+def insertvalues (db, tablename, values):
+    con = lite.connect(db)
     cur = con.cursor()
     if tablename == 'Hierarchies':
         cur.executemany("INSERT INTO Hierarchies VALUES (?,?);", values)
@@ -63,22 +63,41 @@ def insertvalues (tablename, values):
             con.commit()
 
 
-def base(tablename, parentname):
-    con = lite.connect('test.db')
+def is_base(db, tablename, checkname):
+    con = lite.connect(db)
     cur = con.cursor()
+    parentlist = list(cur.execute("SELECT Parent FROM %s" % tablename))
+    if (checkname, ) not in parentlist:
+        return True
+    else:
+        return False
+
+
+def get_children_list(db, tablename, parent):
+    con = lite.connect(db)
+    cur = con.cursor()
+    child = list(cur.execute("SELECT Child from %s WHERE Parent = (?)" % tablename, (parent, )))
+    child_list = []
+    for item in child:
+        child_list.append(item[0])
+    return child_list
+
+
+def get_base_elements(db, tablename, parentname):
     base_list = []
-    # Select child items to parent
-    selectedvalue = list(cur.execute("SELECT Child from %s WHERE Parent = (?)" % tablename, (parentname,)))
-    # create list for base check
-    for item in selectedvalue:
-        if not list(cur.execute("SELECT Child FROM %s WHERE Parent = (?)" % tablename, item)):
-            base_list.append(item[0])
-    # clear selectedvalue list from not base elements
-    for item in base_list:
-        if (item, ) in selectedvalue:
-            selectedvalue.remove((item, ))
-    print(selectedvalue)
-    
+    children_list = get_children_list(db, tablename, parentname)
+    i = 0
+    while i < len(children_list):
+        if is_base(db, tablename, children_list[i]):
+            base_list.append(children_list[i])
+            i += 1
+        else:
+            add_list = get_children_list(db, tablename, children_list[i])
+            curr_pos = i
+            children_list.remove(children_list[i])
+            for item in add_list:
+                children_list.insert(curr_pos, item)
+                curr_pos += 1
     return base_list
 
 if __name__ == '__main__':
@@ -89,4 +108,7 @@ if __name__ == '__main__':
         insertvalues(key, data)
     print("Tables is filled")
     '''
-    print(base('Accounts', '1110000'))
+    test_list = get_base_elements('test.db', 'Entity', 'WIND_CON')
+    for account in test_list:
+        print (account)
+    #print(get_children_list('test.db', 'Accounts', '1110000'))
