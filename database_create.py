@@ -110,5 +110,4 @@ def create_database(databasename):
     return True
 
 if __name__ == '__main__':
-    if create_database('func_test.db'):
-        print ('Done')
+    create_database('./Parser/test.db')
