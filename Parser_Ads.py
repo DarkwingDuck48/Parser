@@ -1,20 +1,9 @@
 # todo Delete AdsParse as class. It should be a function
 import sqlite3 as lite
 
-'''
-class AdsParse(object):
-    def __init__(self, ads_file):
-        self.ads_file = ads_file
-        self.tablename = None
-        self.columns = None
-        # Store all data from ads, key - table name, value - data
-        self.data = self.parse()
-        self.customtop = ['MovProd', 'VarLob', 'MktOvr', 'AuditDim', 'RelPartDisc1', 'CostCenterDisc2', 'CustType']
-'''
+
 def parse(ads_file):
-    customtop = ['MovProd', 'VarLob', 'MktOvr', 'AuditDim', 'RelPartDisc1', 'CostCenterDisc2', 'CustType']
     tablename = None
-    columns = None
     data = {}
     data_str = []
     with open(ads_file, 'r', encoding='utf-8') as meta:
@@ -38,33 +27,27 @@ def parse(ads_file):
 
 def insertvalues (db, tablename, values):
     con = lite.connect(db)
-    cur = con.cursor()
-    if tablename == 'Hierarchies':
-        cur.executemany("INSERT INTO Hierarchies VALUES (?,?);", values)
-        con.commit()
-    else:
+    with con:
+        cur = con.cursor()
         if tablename == 'Entity':
             for i in range(1, len(values)):
                 data = [values[i][0]]
                 for x in values[i][1]:
                     data.append(x)
-                cur.executemany("INSERT INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
-            con.commit()
+                cur.executemany("INSERT OR REPLACE INTO Entity VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", (data,))
         elif tablename == 'Account':
             for i in range(1, len(values)):
                 data = [values[i][0]]
                 for x in values[i][1]:
                     data.append(x)
-                cur.executemany('''INSERT INTO Accounts VALUES
-                               (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''', (data,))
-            con.commit()
+                cur.executemany('''INSERT OR REPLACE INTO Accounts VALUES
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''', (data,))
         elif tablename in ['MovProd', 'VarLob', 'MktOvr', 'AuditDim', 'RelPartDisc1', 'CostCenterDisc2', 'CustType']:
             for i in range(1, len(values)):
                 data = [values[i][0]]
                 for x in values[i][1]:
                     data.append(x)
-                cur.executemany("INSERT INTO %s VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);" % tablename, (data,))
-            con.commit()
+                cur.executemany("INSERT OR REPLACE INTO %s VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);" % tablename, (data,))
 
 
 def is_base(db, tablename, checkname):
@@ -105,15 +88,15 @@ def get_base_elements(db, tablename, parentname):
     return base_list
 
 if __name__ == '__main__':
-    #test = AdsParse('GRSHFM_Metadata_17030102.ads')
-    #data_table = parse('./Parser/GRSHFM_Metadata_17030102.ads')
-    '''
-    for key in data_table.keys():
-        data = list(enumerate(data_table[key], start=0))
-        insertvalues('./Parser/test.db', key, data)
-    print("Tables is filled")
-    '''
-    test_list = get_base_elements('test.db', 'Entity', 'WIND_CON')
-    for account in test_list:
-        print (account)
+    #todo make insertvalues call in function. 
+    #data_test1 = parse('GRSHFM_Metadata_17040101.ads')
+
+    #for key in data_test1.keys():
+    #   data = list(enumerate(data_test1[key], start=0))
+    #    insertvalues('test.db', key, data)
+    #print("Tables is filled")
+
+    #test_list = get_base_elements('test.db', 'MovProd', 'Product')
+    #for account in test_list:
+    #    print(account)
     #print(get_children_list('test.db', 'Accounts', '1110000'))
