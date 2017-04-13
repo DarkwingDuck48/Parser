@@ -1,4 +1,3 @@
-# todo Delete AdsParse as class. It should be a function
 import sqlite3 as lite
 
 
