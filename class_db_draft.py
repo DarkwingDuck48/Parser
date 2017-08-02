@@ -5,12 +5,12 @@ import os.path
 
 class Metadata(object):
     def __init__(self, databasename, ads_file):
-        '''
+        """
         
         :param databasename: name of database without extention
         :param ads_file: ads file with GRSHFM metadata
         :parameter database_created: status of creation database 
-        '''
+        """
         self.databasename = None
         self.database_created = False
         self.ads_file = ads_file
@@ -30,10 +30,10 @@ class Metadata(object):
                 self.insertvalues(tablename, data)
 
     def parse(self):
-        '''
+        """
         
         :return: dictionary with parsed metadata
-        '''
+        """
         tablename = None
         data = {}
         data_str = []
@@ -150,12 +150,12 @@ class Metadata(object):
         return True
 
     def insertvalues(self, tablename, values):
-        '''
+        """
         
         :param tablename: Name of dimension
         :param values: data from metadata
         :return: 
-        '''
+        """
         con = lite.connect(self.databasename)
         with con:
             cur = con.cursor()
@@ -182,6 +182,13 @@ class Metadata(object):
                                         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);''' % tablename, (data,))
         return True
 
+    def databaseupdate(self, updated_ads):
+        if updated_ads != self.ads_file:
+            self.ads_file = updated_ads
+            self.data = self.parse()
+
+
 if __name__ == '__main__':
-    test = Metadata('classtest', 'GRSHFM_Metadata_17040101.ads')
+    test = Metadata('classtest', 'GRSHFM_Metadata_17050101.ads')
+
 

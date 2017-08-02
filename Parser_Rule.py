@@ -7,6 +7,8 @@ e-mail: maksbritvin@gmail.com
 
 Dependence:
 1. veryprettytable (run pip install veryprettytable in command line)
+
+
 """
 
 # todo add metadata parser
@@ -26,7 +28,7 @@ class GRSHFMrule:
         self.log_start = len(self.allrule) + 1
         self.log_end = 0
 
-# Working with functions
+    # Working with functions
     @property
     def function_list(self):
         """
@@ -45,7 +47,7 @@ class GRSHFMrule:
                 line_dict = {}
                 if len(line) > 1 and not line[1].startswith(')'):
                     if len(line[1]) > 1:
-                        line_dict = {line[0]: line[1][:len(line[1])-1]}
+                        line_dict = {line[0]: line[1][:len(line[1]) - 1]}
                 else:
                     line_dict = {line[0]: "None"}
                 func.update(line_dict)
@@ -74,7 +76,7 @@ class GRSHFMrule:
 
         return no_input_rule
 
-# Working with changelog
+    # Working with changelog
     @property
     def changelog(self):
         """
@@ -86,7 +88,6 @@ class GRSHFMrule:
         :return: table with changes
         :rtype VeryPrettyTable()
         """
-
         prettytable = VeryPrettyTable()
         changelog = []
         for i in range(0, len(self.allrule)):
@@ -97,7 +98,14 @@ class GRSHFMrule:
                 break
         self.log_start += self.cl_intendant  # intending from change log string to table
         for i in range(self.log_start, self.log_end):
-            changelog.append([item for item in self.allrule[i][1:].strip().split(self.cl_separator) if item])
+            self.allrule[i] = self.allrule[i].replace(' ', '\t')
+            comment_line = [item for item in self.allrule[i][1:].strip().split(self.cl_separator) if item]
+            version = comment_line.pop(0)
+            reason = comment_line.pop(0)
+            author = comment_line.pop(0)
+            data = comment_line.pop(0)
+            comment = " ".join(comment_line)
+            changelog.append([version, reason, author, data, comment])
         prettytable.field_names = ["Version", 'Reason', 'Author', 'Date', 'Comment']
         prettytable.align['Comment'] = 'l'
         for change in changelog:
@@ -114,4 +122,7 @@ class GRSHFMrule:
         self.changelog.get_string(sortby="Version")
         print(self.changelog[-number:])
 
-rule = GRSHFMrule("GRSHFM_Rules_v17010301.rle", 6, '\t')
+if __name__ == "__main__":
+    rule = GRSHFMrule("GRSHFM_Rules_v17040101.rle", 6, '\t')
+    for line in rule.noinput_rule:
+        print(line)

@@ -6,12 +6,6 @@ Create database with all needed tables in it with correct column names
 # todo add check succsessful creation of database
 
 import sqlite3 as lite
-import os
-import os.path
-
-#if os.path.exists(os.getcwd()+'\\test.db'):
-#    os.remove(os.getcwd()+'\\test.db')
-#    print("DB deleted")
 
 
 def create_database(databasename):
@@ -110,4 +104,4 @@ def create_database(databasename):
     return True
 
 if __name__ == '__main__':
-    create_database('./Parser/test.db')
+    create_database("test2.db")
